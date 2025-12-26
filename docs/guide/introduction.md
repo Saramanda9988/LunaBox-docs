@@ -4,6 +4,8 @@ LunaBox 是一个轻量、快速、功能强大的视觉小说管理与游玩统
 
 它基于 Wails (Go + React) 构建，旨在提供流畅的用户体验和丰富的功能，帮助玩家更好地管理和享受他们的游戏库。
 
+![img.png](/image/home4introduce.png)
+
 ## 核心特性
 
 - **游戏分类管理**：自定义分类，灵活管理游戏库。
@@ -27,3 +29,5 @@ LunaBox 使用了以下现代技术栈构建：
 | **数据库** | [DuckDB](https://duckdb.org/) |
 | **构建工具** | [Vite](https://vitejs.dev/) |
 | **样式** | [UnoCSS](https://unocss.dev/) |
+
+![luna](/logo-luna.png)

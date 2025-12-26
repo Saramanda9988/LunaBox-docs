@@ -13,6 +13,9 @@ LunaBox 支持从 [PotatoVN](https://potatovn.net/) 导入游戏数据，方便�
 - 在游戏库页面，点击 **添加游戏** 按钮，选择 **从 PotatoVN 导入** 选项。
 - 在弹出的文件选择对话框中，找到并选择之前导出的 PotatoVN ZIP 数据文件。
 - 系统会自动预览将要导入的游戏列表，您可以查看哪些游戏将被导入、哪些已存在、哪些没有路径。
+
+## 4. 导入选项说明
+![img_5.png](../public/image/potatovn-import.png)
 - 您可以选择是否跳过没有路径的游戏（这可能是PotatoVN的网络游戏功能）。
 - 点击 **导入** 按钮，LunaBox 会自动解压文件、解析 data.galgames.json 并导入游戏数据。
 
