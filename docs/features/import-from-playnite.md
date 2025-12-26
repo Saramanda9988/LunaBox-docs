@@ -98,7 +98,7 @@ LunaBox 支持从 [Playnite](https://playnite.link/) 导入游戏数据，方便
 - 点击 **导入** 按钮，LunaBox 会自动解析文件并导入游戏数据。
 
 ## 4. 导入选项说明
-![img_4.png](../public/image/playnite-import.png)
+![img_4.png](/image/playnite-import.png)
 - **跳过无路径的游戏**：勾选此项将跳过没有本地路径的游戏（可能是网络游戏或已删除的游戏）
 - **预览功能**：在导入前可以预览游戏列表，包括游戏名称、开发商、状态等信息
 

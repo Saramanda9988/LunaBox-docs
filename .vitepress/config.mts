@@ -5,12 +5,12 @@ export default defineConfig({
   srcDir: "docs",
 
   title: "LunaBox",
-  description: "轻量、快速、功能强大的视觉小说管理与游玩统计工具",
-  head: [['link', { rel: 'icon', href: '/appicon.png' }]],
+  description: "轻量、快速、功能丰富的视觉小说管理与游玩统计工具",
+  head: [['link', { rel: 'icon', href: '/icon/appicon.png' }]],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    logo: { light: '/logo.svg', dark: '/logo-dark.svg' },
+    logo: { light: '/icon/logo.svg', dark: '/icon/logo-dark.svg' },
 
     nav: [
       { text: '首页', link: '/' },
@@ -42,7 +42,6 @@ export default defineConfig({
         text: '高级配置',
         items: [
           { text: '配置指南', link: '/configuration/' },
-          { text: '使用云盘备份功能', link: '/configuration/cloud-backup' },
           { text: '使用S3存储云备份', link: '/configuration/s3-cloud-backup' },
           { text: '使用OneDrive存储云备份', link: '/configuration/onedrive-cloud-backup' }
         ]

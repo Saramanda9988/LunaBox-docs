@@ -32,9 +32,9 @@ LunaBox 支持直接通过 Microsoft OneDrive 进行数据备份。这对于使�
 1. 进入[Azure 应用注册](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade)
 2. 进行应用注册，填写名称，选择支持的账户类型（建议选择“任何组织目录中的账户和个人微软账户”）
 3. 在重定向 URI 中添加 `http://localhost:23456/callback` （LunaBox 使用本地回调进行 OAuth 流程）
-![img.png](../public/image/onedrive.png)
+![img.png](/image/onedrive.png)
 4. 创建应用后，记下clientId，保存到 LunaBox 的 OneDrive 配置中的 `Client ID` 字段，进行前确保处于退出登录状态
-![img_1.png](../public/image/onedrive1.png)
+![img_1.png](/image/onedrive1.png)
 5. 重新进行授权即可
 
 ::: warning

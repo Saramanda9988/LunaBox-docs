@@ -3,10 +3,10 @@ layout: home
 
 hero:
   name: "LunaBox"
-  text: "轻量级视觉小说管理工具"
-  tagline: 快速、美观、功能强大
+  text: "轻量视觉小说管理工具"
+  tagline: 快速、美观、功能丰富
   image:
-    src: /appicon.png
+    src: /icon/appicon.png
     alt: LunaBox Logo
   actions:
     - theme: brand

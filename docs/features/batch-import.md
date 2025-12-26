@@ -11,7 +11,7 @@ LunaBox 支持批量导入游戏库，通过扫描游戏目录自动识别游戏
 - 系统将扫描该目录下的一级子目录，识别包含可执行文件的文件夹作为游戏。
 
 ## 3. 预览和配置
-![img.png](../public/image/batch-import.png)
+![img.png](/image/batch-import.png)
 系统会显示检测到的游戏列表，您可以进行以下操作：
 
 ### 选择游戏
@@ -30,10 +30,10 @@ LunaBox 支持批量导入游戏库，通过扫描游戏目录自动识别游戏
 - 匹配过程会显示进度条，为避免触发限流，匹配速度可能较慢，请耐心等待
 - 匹配完成后，系统会显示匹配结果，包括成功匹配和未匹配的游戏
 - 如果您认为自动匹配源的数据并不匹配，可以点击手动选择按钮，选择当次获取结果中的其他源的结果，或者通过 ID 手动搜索
-![img_3.png](../public/image/batch-import-3.png)
+![img_3.png](/image/batch-import-3.png)
 - 想重新搜索，请在修改名称后重新点击获取元信息按钮
-![img_1.png](../public/image/batch-import-1.png)
-![img_2.png](../public/image/batch-import-2.png)
+![img_1.png](/image/batch-import-1.png)
+![img_2.png](/image/batch-import-2.png)
 
 ### 手动选择元数据
 对于自动匹配失败的游戏，您可以：
