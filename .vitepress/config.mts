@@ -38,6 +38,8 @@ export default defineConfig({
           { text: '拖拽导入游戏', link: '/features/drag-drop-import' },
           { text: 'AI评价', link: '/features/ai-review' },
           { text: '启动工具配置', link: '/features/launch-tools' },
+          { text: '自动检测游玩进程', link: '/features/auto-detect-process' },
+          { text: '命令行工具（CLI）', link: '/features/cli' },
           { text: '背景图设置', link: '/features/background-settings' },
         ]
       },
