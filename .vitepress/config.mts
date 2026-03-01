@@ -34,6 +34,7 @@ export default defineConfig({
           { text: '批量导入数据', link: '/features/batch-import' },
           { text: '从Playnite迁移', link: '/features/import-from-playnite' },
           { text: '从PotatoVN迁移', link: '/features/import-from-potatovn' },
+          { text: '从Vnite迁移', link: '/features/import-from-vnite' },
           { text: '手动添加游戏', link: '/features/manual-add' },
           { text: '拖拽导入游戏', link: '/features/drag-drop-import' },
           { text: 'AI评价', link: '/features/ai-review' },
