@@ -51,6 +51,12 @@ export default defineConfig({
           { text: '使用S3存储云备份', link: '/configuration/s3-cloud-backup' },
           { text: '使用OneDrive存储云备份', link: '/configuration/onedrive-cloud-backup' }
         ]
+      },
+      {
+        text: '外部接入',
+        items: [
+          { text: '通过协议触发下载', link: '/integration/download-via-protocol' }
+        ]
       }
     ],
 
