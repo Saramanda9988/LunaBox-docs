@@ -7,6 +7,8 @@
 ::: warning 重要
 当前 lunacli 需要 **LunaBox GUI 应用正在运行** 才能执行命令（它会通过 IPC 调用正在运行的主程序）。
 如果未启动 LunaBox，会提示：`LunaBox application is not running.`
+
+例外：`lunacli protocol ...`、`lunacli --register-protocol`、`lunacli --unregister-protocol` 这类本地协议管理命令可直接执行，不依赖 GUI。
 :::
 
 ## 1. 基本用法
@@ -73,7 +75,55 @@ lunacli backup -g 1a2b3c4d
 lunacli backup -g "Wonderful Everyday"
 ```
 
-## 5. 常见问题
+## 5. 协议注册与取消注册
+
+LunaBox 支持通过 CLI 管理 `lunabox://` 自定义协议，注册位置为当前用户的注册表：`HKCU\Software\Classes\lunabox`，通常不需要管理员权限。
+
+注册协议：
+
+```bash
+lunacli protocol register
+```
+
+也可以指定要写入注册表的可执行文件路径：
+
+```bash
+lunacli protocol register --exe "D:\Apps\LunaBox\LunaBox.exe"
+```
+
+兼容的简写形式：
+
+```bash
+lunacli --register-protocol
+```
+
+取消注册协议：
+
+```bash
+lunacli protocol unregister
+```
+
+兼容的简写形式：
+
+```bash
+lunacli --unregister-protocol
+```
+
+如果你想确认当前是否已经注册，可以在 PowerShell 中执行：
+
+```powershell
+Get-Item "Registry::HKEY_CURRENT_USER\Software\Classes\lunabox"
+Get-ItemProperty "Registry::HKEY_CURRENT_USER\Software\Classes\lunabox\shell\open\command"
+```
+
+若要查看合并后的协议视图，也可以查询：
+
+```powershell
+Get-Item "Registry::HKEY_CLASSES_ROOT\lunabox"
+Get-ItemProperty "Registry::HKEY_CLASSES_ROOT\lunabox\shell\open\command"
+```
+
+## 6. 常见问题
 
 ### Q: 提示应用未运行？
 

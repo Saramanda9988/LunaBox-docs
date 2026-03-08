@@ -18,7 +18,7 @@ LunaBox 仅提供“协议唤起 + 下载任务 + 本地导入”技术能力，
 协议入口：`lunabox://install?...`
 
 ```text
-lunabox://install?url=<下载链接>&file_name=<文件名>&archive_format=<压缩格式>&...
+lunabox://install?url=<下载链接>&file_name=<文件名>&archive_format=<压缩格式>&size=<文件大小>&checksum_algo=<校验算法>&checksum=<校验值>&expires_at=<过期时间>&...
 ```
 
 请对 query 参数进行 URL 编码（尤其是中文、空格、路径、标题）。
@@ -26,7 +26,7 @@ lunabox://install?url=<下载链接>&file_name=<文件名>&archive_format=<压�
 ## 2. 参数定义
 
 | 参数 | 类型 | 可选 | 说明 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `url` | string | 否 | 下载直链 |
 | `file_name` | string | 否 | 下载文件名（不会从 URL 自动猜测） |
 | `archive_format` | string | 否 | 压缩格式：`none/zip/rar/7z/tar/tar.gz/tar.bz2/tar.xz/tar.zst/tgz/tbz2/txz/tzst` |
@@ -37,18 +37,20 @@ lunabox://install?url=<下载链接>&file_name=<文件名>&archive_format=<压�
 | `source` | string | 是 | 元数据来源：`bangumi`/`vndb`/`ymgal` |
 | `meta_source` | string | 是 | `source` 的兼容别名（仅当 `source` 为空时生效） |
 | `meta_id` | string | 是 | 元数据 ID |
-| `size` | int64 | 是 | 文件大小（字节）；若提供会做大小一致性校验 |
-| `checksum_algo` | string | 是 | 校验算法：`sha256` 或 `blake3`（需与 `checksum` 成对） |
-| `checksum` | string | 是 | 校验值（hex；建议小写）（需与 `checksum_algo` 成对） |
-| `expires_at` | int64 | 是 | 请求过期时间（Unix 秒） |
+| `size` | int64 | 否 | 文件大小（字节）；必填，且必须 `> 0` |
+| `checksum_algo` | string | 否 | 校验算法：`sha256` 或 `blake3`；必填 |
+| `checksum` | string | 否 | 校验值（64 位 hex，小写）；必填 |
+| `expires_at` | int64 | 否 | 请求过期时间（Unix 秒）；必填 |
 
 ## 3. 参数校验与行为
 
-- `url`、`file_name`、`archive_format` 缺失会直接拒绝
+- `url`、`file_name`、`archive_format`、`size`、`checksum_algo`、`checksum`、`expires_at` 缺失会直接拒绝
+- `url` 仅支持 `http` / `https`，且不允许 `localhost`、回环、本地网段或链路本地地址
 - `archive_format` 必须在支持列表内
-- `size` 传入时必须 `>= 0`
-- `expires_at` 传入时必须 `> 0` 且未过期
-- `checksum_algo` 与 `checksum` 必须同时提供，且算法仅支持 `sha256` / `blake3`
+- `size` 必须 `> 0`，下载过程会按该值做强校验并拒绝超量响应
+- `expires_at` 必须 `> 0` 且未过期
+- `checksum_algo` 仅支持 `sha256` / `blake3`
+- `checksum` 必须是对应算法的 64 位小写 hex
 - `startup_path` 规则：
   - 必须是相对路径
   - 不能是绝对路径
@@ -72,7 +74,7 @@ lunabox://install?url=<下载链接>&file_name=<文件名>&archive_format=<压�
 ### 最小示例
 
 ```text
-lunabox://install?url=https%3A%2F%2Fexample.com%2Fgame.zip&file_name=game.zip&archive_format=zip
+lunabox://install?url=https%3A%2F%2Fexample.com%2Fgame.zip&file_name=game.zip&archive_format=zip&size=104857600&checksum_algo=sha256&checksum=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef&expires_at=1893456000
 ```
 
 ### 完整示例
@@ -84,11 +86,14 @@ lunabox://install?url=https%3A%2F%2Fcdn.example.com%2Fvn%2Fgame.7z&file_name=MyG
 ## 6. 接入注意事项
 
 ::: warning
+
 - 请确保下载链接可由客户端直接访问（鉴权链接请控制时效）
+- 请只提供公网可访问的 `http` / `https` 链接；LunaBox 会拒绝内网、回环和 `localhost`
 - `archive_format` 必须与真实文件格式一致
 - `startup_path` 必须传相对路径，不要传绝对路径
-- 建议提供 `size` 与 `checksum` 以提升完整性校验能力
+- `size`、`checksum_algo`、`checksum`、`expires_at` 现已调整为必填安全字段
 - 建议在接入方实现按钮防刷、人机验证、来源审计与风控策略
+
 :::
 
 ## 7. 错误排查建议
@@ -99,6 +104,7 @@ lunabox://install?url=https%3A%2F%2Fcdn.example.com%2Fvn%2Fgame.7z&file_name=MyG
 - 便携版客户端是否注册 `lunabox://` 协议
 - 必填参数是否齐全
 - 参数是否 URL 编码
+- 下载链接是否为公网 `http` / `https`
 - `archive_format` 是否与实际文件一致
 - `size` / `checksum` 是否与文件一致
 - `startup_path` 是否为合法相对路径
