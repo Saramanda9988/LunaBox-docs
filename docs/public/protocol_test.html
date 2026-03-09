@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LunaBox Protocol Test</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1114;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 640px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #f8fafc;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: #1e2128;
+      border: 1px solid #2d3348;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card h2 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 0.35rem;
+      margin-top: 0.75rem;
+    }
+    label:first-of-type { margin-top: 0; }
+    input {
+      width: 100%;
+      background: #0f1114;
+      border: 1px solid #2d3348;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      color: #e2e8f0;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: #6366f1; }
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    button {
+      padding: 0.55rem 1.25rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.85; }
+    .btn-primary { background: #6366f1; color: #fff; }
+    .btn-secondary { background: #2d3348; color: #cbd5e1; }
+    .output {
+      background: #0f1114;
+      border: 1px solid #2d3348;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-top: 1rem;
+      font-family: "Cascadia Code", "Fira Code", monospace;
+      font-size: 0.8rem;
+      color: #a3e635;
+      word-break: break-all;
+      white-space: pre-wrap;
+      min-height: 3rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: #1e3a5f;
+      color: #60a5fa;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LunaBox Protocol Test <span class="tag">lunabox://</span></h1>
+    <p class="subtitle">用于测试 lunabox:// 协议是否已正确注册并能调起 LunaBox</p>
+
+    <!-- 参数输入区 -->
+    <div class="card">
+      <h2>Install 参数</h2>
+
+      <label>title（游戏名称）</label>
+      <input id="title" placeholder="准备添加到库中游戏的名称" />
+
+      <label>url（下载直链，必填）</label>
+      <input id="url" placeholder="https://www.test.com/games%2F5815%2F6938%2Ftest.zip?Authorization=example_token" />
+
+      <label>file_name（文件名，必填）</label>
+      <input id="file_name" placeholder="test.zip" />
+
+      <label>archive_format（压缩格式，必填）</label>
+      <select id="archive_format" style="width:100%;background:#0f1114;border:1px solid #2d3348;border-radius:8px;padding:0.5rem 0.75rem;color:#e2e8f0;font-size:0.875rem;outline:none;">
+        <option value="none">none</option>
+        <option value="zip" selected>zip</option>
+        <option value="rar">rar</option>
+        <option value="7z">7z</option>
+        <option value="tar">tar</option>
+        <option value="tar.gz">tar.gz</option>
+        <option value="tar.bz2">tar.bz2</option>
+        <option value="tar.xz">tar.xz</option>
+        <option value="tar.zst">tar.zst</option>
+      </select>
+
+      <label>startup_path（启动相对路径，可选）</label>
+      <input id="startup_path" value="" placeholder="例如：Game.exe 或 bin/game.exe" />
+
+      <label>download_source（下载来源，可选）</label>
+      <input id="download_source" placeholder="e.g. Umbra等" />
+
+      <label>source（元数据来源，可选）</label>
+      <select id="source" style="width:100%;background:#0f1114;border:1px solid #2d3348;border-radius:8px;padding:0.5rem 0.75rem;color:#e2e8f0;font-size:0.875rem;outline:none;">
+        <option value="">（不设置）</option>
+        <option value="vndb" selected>vndb</option>
+        <option value="bangumi">bangumi</option>
+        <option value="ymgal">ymgal</option>
+      </select>
+
+      <label>meta_id（元数据 ID，可选）</label>
+      <input id="meta_id" placeholder="例如：V5815" />
+
+      <label>size（文件大小 bytes，必填）</label>
+      <input id="size" type="number" placeholder="1073741824" />
+
+      <label>checksum_algo（必填）</label>
+      <select id="checksum_algo" style="width:100%;background:#0f1114;border:1px solid #2d3348;border-radius:8px;padding:0.5rem 0.75rem;color:#e2e8f0;font-size:0.875rem;outline:none;">
+        <option value="sha256">sha256</option>
+        <option value="blake3" selected>blake3</option>
+      </select>
+
+      <label>checksum（必填，64 位 hex）</label>
+      <input id="checksum" placeholder="hex digest" />
+
+      <label>expires_at（必填，Unix 秒）</label>
+      <input id="expires_at" type="number" placeholder="例如：1893456000" />
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="card">
+      <h2>操作</h2>
+      <div class="btn-group">
+        <button class="btn-primary" onclick="triggerInstall()">触发 lunabox://install</button>
+        <button class="btn-secondary" onclick="copyURI()">复制 URI</button>
+      </div>
+      <div class="output" id="output">等待操作...</div>
+    </div>
+  </div>
+
+  <script>
+    function buildURI() {
+      const title           = document.getElementById("title").value.trim();
+      const url             = document.getElementById("url").value.trim();
+      const file_name       = document.getElementById("file_name").value.trim();
+      const archive_format  = document.getElementById("archive_format").value.trim();
+      const startup_path    = document.getElementById("startup_path").value.trim();
+      const download_source = document.getElementById("download_source").value.trim();
+      const source          = document.getElementById("source").value.trim();
+      const meta_id         = document.getElementById("meta_id").value.trim();
+      const size            = document.getElementById("size").value.trim();
+      const checksum_algo   = document.getElementById("checksum_algo").value.trim();
+      const checksum        = document.getElementById("checksum").value.trim();
+      const expires_at      = document.getElementById("expires_at").value.trim();
+
+      if (!url) {
+        log("❌ 错误：url 为必填项");
+        return null;
+      }
+      if (!file_name) {
+        log("❌ 错误：file_name 为必填项");
+        return null;
+      }
+      if (!archive_format) {
+        log("❌ 错误：archive_format 为必填项");
+        return null;
+      }
+      if (!size || Number(size) <= 0) {
+        log("❌ 错误：size 为必填项且必须大于 0");
+        return null;
+      }
+      if (!checksum_algo) {
+        log("❌ 错误：checksum_algo 为必填项");
+        return null;
+      }
+      if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
+        log("❌ 错误：checksum 为必填项，且必须是 64 位小写 hex");
+        return null;
+      }
+      if (!expires_at || Number(expires_at) <= Math.floor(Date.now() / 1000)) {
+        log("❌ 错误：expires_at 为必填项，且必须大于当前时间");
+        return null;
+      }
+      try {
+        const parsed = new URL(url);
+        if (!/^https?:$/.test(parsed.protocol)) {
+          log("❌ 错误：url 仅支持 http/https");
+          return null;
+        }
+      } catch {
+        log("❌ 错误：url 格式不合法");
+        return null;
+      }
+
+      const params = new URLSearchParams();
+      params.set("url", url);
+      params.set("file_name", file_name);
+      params.set("archive_format", archive_format);
+      if (startup_path) params.set("startup_path", startup_path);
+      if (title)           params.set("title", title);
+      if (download_source) params.set("download_source", download_source);
+      if (source)          params.set("source", source);
+      if (meta_id)         params.set("meta_id", meta_id);
+      params.set("size", size);
+      params.set("checksum_algo", checksum_algo);
+      params.set("checksum", checksum);
+      params.set("expires_at", expires_at);
+
+      return `lunabox://install?${params.toString()}`;
+    }
+
+    function triggerInstall() {
+      const uri = buildURI();
+      if (!uri) return;
+      log(`📤 触发 URI:\n${uri}\n\n正在调起 LunaBox...`);
+      window.location.href = uri;
+    }
+
+    function copyURI() {
+      const uri = buildURI();
+      if (!uri) return;
+      navigator.clipboard.writeText(uri).then(() => {
+        log(`✅ 已复制到剪贴板:\n${uri}`);
+      });
+    }
+
+    function log(msg) {
+      document.getElementById("output").textContent = msg;
+    }
+
+    // 初始化显示当前 URI 预览
+    document.querySelectorAll("input, select").forEach(el => {
+      el.addEventListener("input", () => {
+        const uri = buildURI();
+        if (uri) document.getElementById("output").textContent = `预览:\n${uri}`;
+      });
+    });
+  </script>
+</body>
+</html>
