@@ -15,6 +15,12 @@ hero:
     - theme: alt
       text: 查看功能
       link: /features/
+    - theme: alt
+      text: GitHub 下载
+      link: https://github.com/Saramanda9988/LunaBox/releases
+    - theme: alt
+      text: Gitee 下载
+      link: https://gitee.com/rin066/luna-box
 
 features:
   - title: 游戏管理
