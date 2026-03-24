@@ -35,7 +35,9 @@ LunaBox 支持直接通过 Microsoft OneDrive 进行数据备份。这对于使�
 ![img.png](/image/onedrive.png)
 4. 创建应用后，记下clientId，保存到 LunaBox 的 OneDrive 配置中的 `Client ID` 字段，进行前确保处于退出登录状态
 ![img_1.png](/image/onedrive1.png)
-5. 重新进行授权即可
+5. 配置如下api权限
+![img.png](/image/onedrive2.png)
+6. 重新进行授权即可
 
 ::: warning
 **一切出现的数据问题，作者概不负责，请谨慎操作**
