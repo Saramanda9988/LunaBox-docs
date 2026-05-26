@@ -8,6 +8,10 @@ export default defineConfig({
   description: "轻量、快速、功能丰富的视觉小说管理与游玩统计工具",
   head: [['link', { rel: 'icon', href: '/icon/appicon.png' }]],
 
+  sitemap: {
+    hostname: 'https://box.lunarain.site'
+  },
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: { light: '/icon/logo.svg', dark: '/icon/logo-dark.svg' },
