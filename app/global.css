@@ -18,13 +18,23 @@
 }
 
 :root {
-  --color-fd-primary: hsl(238, 58%, 52%);
+  --color-fd-primary: #495568;
   --color-fd-primary-foreground: white;
 }
 
 .dark {
   --color-fd-primary: #495568;
   --color-fd-primary-foreground: white;
+}
+
+.docs-layout {
+  --color-fd-primary: #495568;
+  --color-fd-primary-foreground: white;
+}
+
+.dark .docs-layout {
+  --color-fd-primary: #ababab;
+  --color-fd-primary-foreground: #171717;
 }
 
 .home-layout {

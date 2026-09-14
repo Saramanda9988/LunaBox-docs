@@ -4,5 +4,9 @@ import { baseOptions } from '@/lib/layout.shared';
 import { source } from '@/lib/source';
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return <DocsLayout tree={source.getPageTree()} {...baseOptions()}>{children}</DocsLayout>;
+  return (
+    <div className="docs-layout">
+      <DocsLayout tree={source.getPageTree()} {...baseOptions()}>{children}</DocsLayout>
+    </div>
+  );
 }

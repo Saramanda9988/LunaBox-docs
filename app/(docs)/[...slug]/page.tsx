@@ -30,7 +30,7 @@ export default async function Page({ params }: Props) {
   if (!page) notFound();
   const MDX = page.data.body;
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage breadcrumb={{ enabled: false }} toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsBody><MDX components={getMDXComponents()} /></DocsBody>
     </DocsPage>

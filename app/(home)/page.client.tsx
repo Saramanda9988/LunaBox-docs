@@ -39,7 +39,7 @@ const Dithering = dynamic(
 
 export function Hero() {
   const { resolvedTheme } = useTheme();
-  const ref = useRef<HTMLImageElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const visible = useIsVisible(ref);
   const [showShaders, setShowShaders] = useState(false);
   const [imageReady, setImageReady] = useState(false);
@@ -89,18 +89,30 @@ export function Hero() {
           minPixelRatio={1}
         />
       )}
-      <Image
+      <div
         ref={ref}
-        src={resolvedTheme === 'dark' ? HeroDark : HeroLight}
-        alt="LunaBox 游戏库界面"
-        sizes="1200px"
         className={cn(
           'absolute top-[460px] left-[20%] w-[1200px] max-w-none rounded-xl border-2 lg:top-[400px]',
           imageReady ? 'animate-in fade-in duration-400' : 'invisible',
         )}
-        onLoad={() => setImageReady(true)}
-        priority
-      />
+      >
+        <Image
+          src={HeroLight}
+          alt="LunaBox 游戏库界面"
+          sizes="1200px"
+          className="block dark:hidden"
+          onLoad={() => setImageReady(true)}
+          priority
+        />
+        <Image
+          src={HeroDark}
+          alt=""
+          sizes="1200px"
+          className="hidden dark:block"
+          onLoad={() => setImageReady(true)}
+          priority
+        />
+      </div>
     </>
   );
 }
