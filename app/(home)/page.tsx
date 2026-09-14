@@ -21,6 +21,7 @@ import {
   Writing,
 } from './page.client';
 import { Marquee } from './marquee';
+import { PixelMoon } from './pixel-moon';
 import CLIImage from './cli.png';
 import Bg2Image from './bg-2.png';
 import AIImage from '@/public/image/ai.png';
@@ -72,7 +73,9 @@ export default function Page() {
   return (
     <div className="home-content text-landing-foreground pt-4 pb-6 md:pb-12">
       <div className="relative flex min-h-[600px] h-[70vh] max-h-[900px] border rounded-2xl overflow-hidden mx-auto w-full max-w-[1400px] bg-origin-border">
-        <Hero />
+        <Hero>
+          <PixelMoon />
+        </Hero>
         <div className="flex flex-col z-2 px-4 size-full md:p-12 max-md:items-center max-md:text-center">
           <p className="mt-12 text-xs text-brand-readable font-medium rounded-full p-2 border border-brand/50 w-fit">
             为喜爱 GalGame 的你打造
