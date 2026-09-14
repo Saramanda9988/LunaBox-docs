@@ -22,6 +22,7 @@ import HeroLight from '@/public/head-light.png';
 import HeroDark from '@/public/head-dark.png';
 import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
+import { PixelMoon } from './pixel-moon';
 
 const GrainGradient = dynamic(
   () => import('@paper-design/shaders-react').then((mod) => mod.GrainGradient),
@@ -57,7 +58,7 @@ export function Hero() {
     <>
       {showShaders && (
         <GrainGradient
-          className="absolute inset-0 animate-fd-fade-in duration-800"
+          className="hero-grain absolute inset-0"
           colors={
             resolvedTheme === 'dark'
               ? ['#7186A3', '#495568', '#49556800']
@@ -65,30 +66,15 @@ export function Hero() {
           }
           colorBack="#00000000"
           softness={1}
-          intensity={0.9}
-          noise={0.5}
+          intensity={0.65}
+          noise={0.35}
           speed={visible && !reducedMotion ? 1 : 0}
           shape="corners"
           minPixelRatio={1}
           maxPixelCount={1920 * 1080}
         />
       )}
-      {showShaders && (
-        <Dithering
-          width={720}
-          height={720}
-          colorBack="#00000000"
-          colorFront={resolvedTheme === 'dark' ? '#495568' : '#8094B2'}
-          shape="sphere"
-          type="4x4"
-          scale={0.5}
-          size={3}
-          speed={0}
-          frame={5000 * 120}
-          className="absolute animate-fd-fade-in duration-400 max-lg:bottom-[-50%] max-lg:left-[-200px] lg:top-[-5%] lg:right-0"
-          minPixelRatio={1}
-        />
-      )}
+      <PixelMoon />
       <div
         ref={ref}
         className={cn(

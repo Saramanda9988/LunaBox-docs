@@ -79,13 +79,12 @@ export default function Page() {
           </p>
           <h1
             id="home-title"
-            className="text-4xl my-8 leading-tighter font-medium xl:text-5xl xl:mb-12"
+            className="hero-title text-4xl my-8 leading-tight font-medium xl:text-5xl xl:mb-10"
           >
-            轻量, <span className="text-brand-readable">美观</span>,
-            功能丰富的
+            轻量，<span className="text-brand-readable">美观</span>，功能丰富的
             <br />
             <span className="text-brand-readable">视觉小说</span>
-            视觉小说管理与游玩统计工具
+            管理与游玩统计工具
           </h1>
           <div className="flex flex-row items-center justify-center gap-4 flex-wrap w-fit">
             <Link
