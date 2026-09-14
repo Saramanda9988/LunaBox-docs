@@ -11,8 +11,6 @@ export function baseOptions(): BaseLayoutProps {
       url: '/',
     },
     links: [
-      { text: '首页', url: '/' },
-      { text: '快速开始', url: '/guide/introduction/' },
       { text: '加入我们', url: '/contribution/' },
     ],
     githubUrl: 'https://github.com/Saramanda9988/LunaBox',
