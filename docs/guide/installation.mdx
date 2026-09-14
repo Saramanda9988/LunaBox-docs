@@ -1,83 +1,463 @@
 ---
-title: "安装指南"
+title: "开发指南"
+description: "分别配置 Windows、macOS 和 Linux 开发环境，使用 Wails v3 启动 LunaBox 并构建发布包。"
 ---
 
-## 下载安装包
+<Callout type="idea" title="提示">
 
-我们推荐直接从 GitHub Releases 页面下载最新版本的安装包。
+在 [v1.11.0](https://github.com/Saramanda9988/LunaBox/commits/v1.11.0)之后，LunaBox 不再维护 Wails v2 版本。后续开发与构建使用 Wails v3，旧版的 `wails dev` 和 `wails build` 命令仅适用于历史版本。
 
-[前往 Releases 下载](https://github.com/Saramanda9988/LunaBox/releases)
+</Callout>
 
-提供便携版（portable）和安装版（setup），目前仅支持 Windows 系统。
+如果仅需安装应用，请前往 [GitHub Releases](https://github.com/Saramanda9988/LunaBox/releases) 下载发布包。
 
-## 从源码构建
+## 基础工具
 
-如果您是开发者，或者希望体验最新的开发功能，可以从源码构建 LunaBox。
+| 工具 | 要求与用途 |
+| --- | --- |
+| [Git](https://git-scm.com/downloads) | 获取源码和版本信息 |
+| [Go](https://go.dev/dl/) | 按根目录 `go.mod` 的 `go` 声明安装，当前为 `1.27.1` |
+| [Node.js](https://nodejs.org/) | 推荐 `22.12+`，满足项目使用的 Vite 7 要求 |
+| [pnpm](https://pnpm.io/installation) | 应用前端使用 `10.x`，与发布构建环境保持一致 |
+| [Wails v3 CLI](https://v3.wails.io/getting-started/installation/) | 安装与 `go.mod` 中 Wails 依赖相同的版本 |
 
-### 前置要求
+## 配置平台环境
 
-在开始之前，请确保您的开发环境已准备好以下工具：
+<Tabs groupId="lunabox-dev-platform" items={['Windows', 'macOS', 'Linux']} persist>
 
-- [Go 1.24+](https://go.dev/dl/)
-- [Node.js 18+](https://nodejs.org/)
-- [pnpm](https://pnpm.io/)
-- [Wails CLI](https://wails.io/docs/gettingstarted/installation)
-- [msys2](https://www.msys2.org/) (duckdb-go sdk需要)
+<Tab value="Windows">
 
-安装 Wails CLI：
+Windows 的 MSYS2 安装与编译器配置参考 [DuckDB Go 官方文档的 Windows 要求](https://github.com/duckdb/duckdb-go#windows)。项目需要正确版本的 GCC 和相应运行库，并启用 CGO。
 
-```bash
-go install github.com/wailsapp/wails/v2/cmd/wails@latest
-```
-
-### 构建步骤
-
-#### 1.**克隆项目**
+使用 [MSYS2 安装程序](https://www.msys2.org/)完成安装，然后打开 MSYS2 终端并执行官方要求的安装命令：
 
 ```bash
-git clone https://github.com/Saramanda9988/lunabox.git
-cd lunabox
+pacman -S mingw-w64-ucrt-x86_64-gcc
 ```
 
-#### 2. **安装前端依赖**
+根据安装提示确认操作。如果终端在安装过程中关闭，请重新打开终端完成安装。
+
+AMD64 环境中，编译器目标应包含 `x86_64`，CGO 值应为 `1`，Go 架构应为 `amd64`。可以将编译器目录加入 Windows 用户的 `Path` 环境变量。
+
+**配置 WebView2 和 NSIS**
+
+安装 [WebView2 Evergreen Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)，供 Wails 桌面窗口加载前端。构建安装包时，还需安装 [NSIS](https://nsis.sourceforge.io/Download)，NSIS 用于 `installer` 和 `all` 打包模式，便携包使用 `portable` 模式。
+
+</Tab>
+
+<Tab value="macOS">
+
+在 macOS 终端中执行以下命令，安装 Xcode Command Line Tools，提供 Clang 和系统 SDK：
 
 ```bash
-cd frontend && pnpm install && cd ..
+xcode-select --install
 ```
 
-#### 3. **运行开发模式**
+当前发布脚本将最低系统版本设置为 **macOS 12.0**。配置 CGO 和编译目标：
 
 ```bash
-wails dev
+export CGO_ENABLED=1
+export CC=clang
+export CXX=clang++
+export CGO_CFLAGS="-mmacosx-version-min=12.0"
+export CGO_LDFLAGS="-mmacosx-version-min=12.0"
+export MACOSX_DEPLOYMENT_TARGET=12.0
+
+clang --version
+go env CGO_ENABLED GOARCH
 ```
 
-#### 4. **手动构建生产版本**
+Apple Silicon 使用 `arm64`，Intel Mac 使用 `amd64`。使用与本机架构匹配的 Go 安装包。DMG 打包使用系统自带的 `hdiutil` 和 `codesign`。
 
-LunaBox的版本号和安装形式需要在构建时通过参数指定
+Wails 平台依赖参见 [官方安装文档](https://v3.wails.io/getting-started/installation/)。以上 `export` 配置对当前终端及其启动的进程生效。
 
-```cmd
-# 语法：build.bat [构建模式] [版本号]
-# 构建模式：portable(便携版) | installer(安装版) | all(全部)
-# 版本号：可选参数，不指定时自动从Git标签获取
+</Tab>
+
+<Tab value="Linux">
+
+本文以 **Ubuntu 24.04 AMD64** 为例，依赖版本与仓库的 Linux 构建环境保持一致。安装 GCC、GTK4、WebKitGTK 6.0、托盘依赖和 Python 3：
+
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+  build-essential ca-certificates curl desktop-file-utils \
+  libayatana-appindicator3-dev libgtk-4-dev libwebkitgtk-6.0-dev \
+  pkg-config python3
+
+export CGO_ENABLED=1
+export CC=gcc
+export CXX=g++
+
+gcc -dumpmachine
+go env CGO_ENABLED GOARCH
 ```
-建议使用 Windows 批处理脚本构建：
 
-```cmd
-.\scripts\build.bat all v1.0.0-beta
+其他发行版请安装对应的开发包，参见 [Wails Linux 平台依赖](https://v3.wails.io/getting-started/installation/)。当前项目使用 GTK4 和 WebKitGTK 6.0。
+
+仓库通过 `scripts/patch-wails-linux-tray.sh` 修正当前 Wails 版本的 Linux 托盘支持，该脚本需要 Python 3。开发与发布任务都会调用它。请在能够显示桌面窗口的图形会话中启动应用。
+
+</Tab>
+
+</Tabs>
+
+## 获取源码和安装依赖
+
+<Tabs groupId="lunabox-dev-platform" items={['Windows', 'macOS', 'Linux']} persist>
+
+<Tab value="Windows">
+
+**克隆项目**
+
+```powershell
+git clone https://github.com/Saramanda9988/LunaBox.git
+Set-Location LunaBox
 ```
 
-脚本支持以下构建模式：
-- `portable`：构建便携版，数据存储在程序目录
-- `installer`：构建安装版，数据存储在 `%APPDATA%\LunaBox`
-- `all`：同时构建便携版和安装版
+后续命令均在项目根目录执行。
 
-版本号可以通过以下方式指定：
-- 通过命令行参数直接传入（如 `v1.0.0-beta`）
-- 不指定时自动从 Git 标签获取最新版本号
-- 版本号中的 `v` 前缀会被自动移除
+**安装匹配的 Wails v3 CLI**
 
-构建时会自动注入以下信息到可执行文件中：
-- 版本号
-- Git 提交哈希
-- 构建时间
-- 构建模式
+从当前检出的源码读取 Wails 版本并安装 CLI：
+
+```powershell
+$wailsVersion = (go list -m -f '{{.Version}}' github.com/wailsapp/wails/v3).Trim()
+go install "github.com/wailsapp/wails/v3/cmd/wails3@$wailsVersion"
+```
+
+当前仓库使用 `v3.0.0-beta.5`。随着依赖更新，以上命令会使用对应版本。发布脚本会检查 CLI 与项目依赖的版本是否相同。
+
+```powershell
+wails3 version
+wails3 doctor
+```
+
+根据 `wails3 doctor` 的检查结果补齐平台依赖，安装方法参见 [Wails v3 官方安装文档](https://v3.wails.io/getting-started/installation/)。
+
+**安装依赖并准备前端资源**
+
+```powershell
+go mod download
+go -C updater mod download
+pnpm --dir frontend install --frozen-lockfile
+wails3 generate bindings -clean=true -ts
+pnpm --dir frontend build
+```
+
+主程序通过 `go:embed` 嵌入 `frontend/dist`，首次启动前先构建前端，确保嵌入资源存在。`updater` 是仓库内独立的 Go 模块，发布打包时会构建更新程序。
+
+Wails 自动生成的 TypeScript 绑定位于 `frontend/bindings/`。修改后端服务方法或类型后，通过生成命令更新该目录，业务代码使用具体服务绑定文件或 `frontend/src/bindings/` 兼容入口。
+
+</Tab>
+
+<Tab value="macOS">
+
+**克隆项目**
+
+```bash
+git clone https://github.com/Saramanda9988/LunaBox.git
+cd LunaBox
+```
+
+后续命令均在项目根目录执行。
+
+**安装匹配的 Wails v3 CLI**
+
+```bash
+wails_version="$(go list -m -f '{{.Version}}' github.com/wailsapp/wails/v3)"
+go install "github.com/wailsapp/wails/v3/cmd/wails3@${wails_version}"
+
+wails3 version
+wails3 doctor
+```
+
+CLI 版本应与 `go.mod` 中的 Wails 依赖相同，当前为 `v3.0.0-beta.5`。根据检查结果补齐平台依赖。
+
+**安装依赖并准备前端资源**
+
+```bash
+go mod download
+go -C updater mod download
+pnpm --dir frontend install --frozen-lockfile
+wails3 generate bindings -clean=true -ts
+pnpm --dir frontend build
+```
+
+首次启动前先构建前端，确保主程序嵌入的 `frontend/dist` 资源存在。Wails 自动生成的 TypeScript 绑定位于 `frontend/bindings/`，修改后端服务方法或类型后使用生成命令更新。
+
+</Tab>
+
+<Tab value="Linux">
+
+**克隆项目**
+
+```bash
+git clone https://github.com/Saramanda9988/LunaBox.git
+cd LunaBox
+chmod +x scripts/build.sh scripts/update-build-assets.sh scripts/patch-wails-linux-tray.sh
+```
+
+后续命令均在项目根目录执行。
+
+**安装匹配的 Wails v3 CLI**
+
+```bash
+wails_version="$(go list -m -f '{{.Version}}' github.com/wailsapp/wails/v3)"
+go install "github.com/wailsapp/wails/v3/cmd/wails3@${wails_version}"
+
+wails3 version
+wails3 doctor
+```
+
+CLI 版本应与 `go.mod` 中的 Wails 依赖相同，当前为 `v3.0.0-beta.5`。根据检查结果补齐平台依赖。
+
+**安装依赖并准备前端资源**
+
+```bash
+go mod download
+go -C updater mod download
+pnpm --dir frontend install --frozen-lockfile
+wails3 generate bindings -clean=true -ts
+pnpm --dir frontend build
+```
+
+首次启动前先构建前端，确保主程序嵌入的 `frontend/dist` 资源存在。Wails 自动生成的 TypeScript 绑定位于 `frontend/bindings/`，修改后端服务方法或类型后使用生成命令更新。
+
+</Tab>
+
+</Tabs>
+
+## 启动开发模式
+
+<Tabs groupId="lunabox-dev-platform" items={['Windows', 'macOS', 'Linux']} persist>
+
+<Tab value="Windows">
+
+在配置好 CGO 的 PowerShell 终端中执行：
+
+```powershell
+wails3 dev
+```
+
+该任务使用 `build/config.yml` 启动 Wails v3 开发模式，生成绑定、构建开发程序、启动 Vite 服务并打开桌面窗口。Vite 默认端口为 **9245**，前端修改由 Vite 热更新，Go 文件修改会触发程序重新构建。
+
+</Tab>
+
+<Tab value="macOS">
+
+在配置好 CGO 的 macOS 终端中执行：
+
+```bash
+wails3 task dev
+```
+
+该任务使用 `build/config.yml`，构建开发程序、启动 Vite 服务并打开桌面窗口。前端修改由 Vite 热更新，Go 文件修改会触发程序重新构建。
+
+Vite 默认端口为 **9245**。如果该端口被占用，可指定其他端口：
+
+```bash
+wails3 task dev WAILS_VITE_PORT=9250
+```
+
+开发程序输出到 `bin/LunaBox`，在终端按 `Ctrl+C` 结束开发进程。
+
+</Tab>
+
+<Tab value="Linux">
+
+在配置好 CGO 的 Linux 终端中执行：
+
+```bash
+wails3 task dev
+```
+
+该任务使用 `build/config.yml`，构建开发程序、启动 Vite 服务并打开桌面窗口。前端修改由 Vite 热更新，Go 文件修改会触发程序重新构建。Linux 任务会先应用仓库提供的 Wails 托盘补丁。
+
+Vite 默认端口为 **9245**。如果该端口被占用，可指定其他端口：
+
+```bash
+wails3 task dev WAILS_VITE_PORT=9250
+```
+
+开发程序输出到 `bin/LunaBox`，在终端按 `Ctrl+C` 结束开发进程。
+
+</Tab>
+
+</Tabs>
+
+## 构建和打包
+
+<Tabs groupId="lunabox-dev-platform" items={['Windows', 'macOS', 'Linux']} persist>
+
+<Tab value="Windows">
+
+发布脚本参数格式为 `scripts\build.bat [构建模式] [版本号] [目标架构]`。目标架构支持 `amd64` 和 `arm64`，默认使用 `amd64`。
+
+| 构建模式 | 产物与数据目录 |
+| --- | --- |
+| `portable` | 便携 ZIP，数据存储在程序目录 |
+| `installer` | NSIS 安装程序，数据存储在 `%APPDATA%\LunaBox` |
+| `all` | 同时生成便携 ZIP 和安装程序 |
+
+以 `1.12.1` 为示例版本，先更新 Windows 版本资源，再生成发布包：
+
+```powershell
+.\scripts\update-build-assets.bat 1.12.1
+.\scripts\build.bat all 1.12.1 amd64
+```
+
+`update-build-assets.bat` 更新 `build/config.yml` 和平台构建资源中的版本信息，接受 `X.Y.Z` 格式及可选的 `v` 前缀。构建其他版本时，请将两条命令中的版本号一并替换。
+
+单独生成便携包或安装程序：
+
+```powershell
+.\scripts\build.bat portable 1.12.1 amd64
+.\scripts\build.bat installer 1.12.1 amd64
+```
+
+省略版本号时，脚本通过 `git describe` 获取最近的 `v` 前缀版本标签；缺少标签时使用 `1.0.0`。传入版本号的 `v` 前缀会自动移除。脚本还会注入 Git 提交哈希、构建时间和构建模式。
+
+发布脚本自动安装锁定的前端依赖、生成 Wails v3 绑定、构建生产前端，并编译桌面程序、命令行程序和独立更新程序。请保留仓库中的 `lib/winamd64/7z/7z.exe` 和 `7z.dll`，脚本会将它们加入发布包。
+
+生成的发布包位于 **`build/bin/`**：
+
+```text
+build/bin/LunaBox-1.12.1-windows-amd64-portable.zip
+build/bin/LunaBox-1.12.1-windows-amd64-setup.exe
+```
+
+**Windows ARM64 打包**
+
+ARM64 打包需要面向 ARM64 的 CGO 编译器。项目发布构建在 Windows ARM64 环境中使用 MSYS2 的 **CLANGARM64** 工具。在该终端中安装：
+
+```bash
+pacman -S --needed mingw-w64-clang-aarch64-toolchain
+```
+
+在 PowerShell 中指定 MSYS2 安装目录并执行发布脚本：
+
+```powershell
+$env:MSYS2_LOCATION = "C:\msys64"
+.\scripts\build.bat all 1.12.1 arm64
+```
+
+脚本会查找 `clangarm64/bin/clang.exe`，配置 ARM64 编译目标，并使用仓库中的 `lib/winarm64/duckdb.dll`、`duckdb.lib` 和 `lib/winarm64/7z/`。请保留这些文件，ARM64 发布包会包含运行所需的 DuckDB 动态库。
+
+</Tab>
+
+<Tab value="macOS">
+
+以 Apple Silicon 和 `1.12.1` 为例：
+
+```bash
+bash scripts/update-build-assets.sh 1.12.1
+bash scripts/build.sh installer 1.12.1 arm64
+```
+
+Intel Mac 将 `arm64` 替换为 `amd64`。省略架构参数时，脚本使用本机架构。macOS 使用 `installer` 模式生成 DMG，`all` 模式也生成相同的 macOS 发布包。
+
+脚本会安装前端依赖、生成绑定、构建生产前端、编译桌面程序和命令行程序，再创建并签名 `LunaBox.app`，生成 DMG。请保留 `lib/macarm64/7z/7zz`，仓库中的该文件同时包含 Intel 和 Apple Silicon 架构。
+
+产物位于 **`build/bin/`**：
+
+```text
+build/bin/LunaBox.app
+build/bin/LunaBox-1.12.1-macos-arm64.dmg
+```
+
+默认使用本地临时签名。正式分发时可通过 `MACOS_SIGN_IDENTITY` 指定签名身份，通过 `MACOS_NOTARY_PROFILE` 指定 Keychain 中的公证配置；脚本会执行相应的签名和公证步骤。
+
+</Tab>
+
+<Tab value="Linux">
+
+**安装发布打包工具**
+
+DEB 和 RPM 打包使用 [nFPM](https://github.com/goreleaser/nfpm)，AppImage 打包使用 [AppImageKit 的 appimagetool](https://github.com/AppImage/AppImageKit)。以下命令与仓库的 Ubuntu AMD64 发布构建方式一致：
+
+```bash
+go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+nfpm --version
+
+curl -fsSL \
+  https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage \
+  -o /tmp/lunabox-appimagetool-x86_64.AppImage
+sudo install -m 0755 /tmp/lunabox-appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+export APPIMAGE_EXTRACT_AND_RUN=1
+appimagetool --version
+```
+
+`APPIMAGE_EXTRACT_AND_RUN=1` 允许打包工具解压后运行，适用于缺少 FUSE 挂载支持的构建环境。
+
+**生成 Linux 发布包**
+
+先更新版本资源，再构建发布包：
+
+```bash
+bash scripts/update-build-assets.sh 1.12.1
+bash scripts/build.sh all 1.12.1 amd64
+```
+
+| 构建模式 | 产物 |
+| --- | --- |
+| `installer` | DEB 和 RPM |
+| `appimage` | AppImage |
+| `all` | DEB、RPM 和 AppImage |
+
+单独构建相应格式：
+
+```bash
+bash scripts/build.sh installer 1.12.1 amd64
+bash scripts/build.sh appimage 1.12.1 amd64
+```
+
+脚本会安装前端依赖、生成绑定、构建生产前端、应用 Linux 托盘补丁，并编译桌面程序和命令行程序。请保留 `lib/linuxamd64/7z/7zz`，脚本会将其加入发布包。
+
+产物位于 **`build/bin/`**：
+
+```text
+build/bin/LunaBox-1.12.1-linux-amd64.deb
+build/bin/LunaBox-1.12.1-linux-amd64.rpm
+build/bin/LunaBox-1.12.1-linux-amd64.AppImage
+```
+
+脚本也接受 `arm64`，需要相应架构的编译环境、`appimagetool-aarch64.AppImage` 和 `lib/linuxarm64/7z/7zz`。当前仓库的 Linux ARM64 自动构建处于暂停状态，本文示例使用 AMD64。
+
+</Tab>
+
+</Tabs>
+
+macOS 和 Linux 的发布脚本省略版本号时，使用最近的 `v` 前缀版本标签，缺少标签时使用 `1.0.0`。更新版本资源的脚本接受 `X.Y.Z` 格式及可选的 `v` 前缀，构建其他版本时请同步替换示例中的版本号。
+
+## 可选的第三方服务配置
+
+需要调试第三方授权或 API 功能时，可复制仓库提供的配置模板：
+
+<Tabs groupId="lunabox-dev-platform" items={['Windows', 'macOS', 'Linux']} persist>
+
+<Tab value="Windows">
+
+```powershell
+Copy-Item .env.build.example .env.build
+```
+
+</Tab>
+
+<Tab value="macOS">
+
+```bash
+cp .env.build.example .env.build
+```
+
+</Tab>
+
+<Tab value="Linux">
+
+```bash
+cp .env.build.example .env.build
+```
+
+</Tab>
+
+</Tabs>
+
+按模板填写所需服务的配置。开发启动会读取 `.env.build` 和 `.env`；发布脚本优先读取 `.env.build`，该文件缺省时读取 `.env`，并将支持的配置注入发布程序。相关功能取决于各服务的配置，基础开发启动可以使用默认设置。
