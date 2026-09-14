@@ -63,14 +63,6 @@ title: 安装指南
 
 站内链接使用完整页面地址，例如 `/features/manual-add/`；图片继续使用 `/image/example.png`。新增文档后，在对应目录的 `meta.json` 中登记页面名称。
 
-## 部署
-
-站点导出为静态 HTML，搜索索引也在构建时生成。静态托管平台的构建命令为 `pnpm docs:build`，发布目录为 `out`，Node.js 版本使用 22 或更新版本。服务器应支持目录索引，以便访问 `/guide/introduction/` 等地址。
-
-迁移后，发布目录由 `.vitepress/dist` 变更为 `out`。原有首页、文档地址、图片地址、`protocol_test.html` 和 Google 验证文件保持有效。
-
-生产域名在 `lib/layout.shared.tsx` 中配置，供页面 canonical、`sitemap.xml` 和 `robots.txt` 使用。
-
 ## 贡献指南
 
 欢迎提交 Pull Request 改进文档。提交前请完成类型检查、生产构建和页面预览。
