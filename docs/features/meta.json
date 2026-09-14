@@ -1,0 +1,19 @@
+{
+  "title": "功能特性",
+  "pages": [
+    "index",
+    "batch-import",
+    "import-from-playnite",
+    "import-from-potatovn",
+    "import-from-vnite",
+    "manual-add",
+    "drag-drop-import",
+    "ai-review",
+    "custom-templates",
+    "launch-tools",
+    "auto-detect-process",
+    "cli",
+    "background-settings"
+  ],
+  "defaultOpen": true
+}

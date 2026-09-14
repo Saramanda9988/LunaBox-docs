@@ -1,0 +1,32 @@
+import { defineTranslations } from 'fumadocs-core/i18n';
+import { uiTranslations } from 'fumadocs-ui/i18n';
+
+export const translations = defineTranslations().extend(uiTranslations()).add({
+  displayName: '简体中文',
+  'Search(search trigger)': '搜索文档',
+  'Search(search dialog)': '搜索文档',
+  'Open Search(search trigger)(aria-label)': '打开文档搜索',
+  'Close Search(search dialog)(aria-label)': '关闭搜索',
+  'No results found(search dialog)': '未找到相关内容',
+  'On this page(table of contents)': '本页目录',
+  'Table of Contents(inline table of contents)': '目录',
+  'No Headings(table of contents)': '本页暂无章节',
+  'Previous Page(pagination)': '上一篇',
+  'Next Page(pagination)': '下一篇',
+  'Light(theme switcher)(aria-label)': '浅色主题',
+  'Dark(theme switcher)(aria-label)': '深色主题',
+  'System(theme switcher)(aria-label)': '跟随系统',
+  'Toggle Theme(theme switcher)(aria-label)': '切换主题',
+  'Open Sidebar(sidebar)(aria-label)': '打开侧边栏',
+  'Close Sidebar(sidebar)(aria-label)': '关闭侧边栏',
+  'Close Sidebar(aria-label)': '关闭侧边栏',
+  'Collapse Sidebar(sidebar)(aria-label)': '折叠侧边栏',
+  'Hide Sidebar(sidebar)': '隐藏侧边栏',
+  'Show Sidebar(sidebar)': '显示侧边栏',
+  'Toggle Menu(mobile menu)(aria-label)': '切换菜单',
+  'Copy Text(code block)(aria-label)': '复制代码',
+  'Copied Text(code block)(aria-label)': '复制成功',
+  'Copy Anchor Link(heading anchor)(aria-label)': '复制章节链接',
+  'Edit on GitHub(edit page)': '在 GitHub 编辑',
+  'Last updated on(page footer)': '最后更新于',
+});

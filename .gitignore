@@ -1,5 +1,11 @@
 node_modules
-pnpm-lock.yaml
 .idea
+.next
+.source
+out
+*.tsbuildinfo
+next-env.d.ts
+output/playwright
+.playwright-cli
 .vitepress/cache
 .vitepress/dist

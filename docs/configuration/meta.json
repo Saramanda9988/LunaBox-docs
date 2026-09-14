@@ -1,0 +1,9 @@
+{
+  "title": "高级配置",
+  "pages": [
+    "index",
+    "s3-cloud-backup",
+    "onedrive-cloud-backup"
+  ],
+  "defaultOpen": true
+}
