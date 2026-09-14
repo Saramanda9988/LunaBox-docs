@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { DocsBody, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import { source } from '@/lib/source';
+import { description as siteDescription } from '@/lib/layout.shared';
+import { siteOpenGraph, siteTwitter } from '@/lib/metadata';
 import { getMDXComponents } from '@/mdx-components';
 
 type Props = { params: Promise<{ slug: string[] }> };
@@ -16,11 +18,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = source.getPage(slug);
   if (!page) notFound();
+  const description = page.data.description?.trim() || siteDescription;
+  const previewTitle = `${page.data.title} | LunaBox`;
   return {
     title: page.data.title,
-    description: page.data.description,
+    description,
     alternates: { canonical: page.url },
-    openGraph: { title: page.data.title, url: page.url },
+    openGraph: {
+      ...siteOpenGraph,
+      title: previewTitle,
+      description,
+      url: page.url,
+    },
+    twitter: {
+      ...siteTwitter,
+      title: previewTitle,
+      description,
+    },
   };
 }
 
