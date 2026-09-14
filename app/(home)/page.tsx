@@ -97,7 +97,7 @@ export default function Page() {
               快速开始
             </Link>
             <a
-              href="https://github.com/Saramanda9988/LunaBox/releases"
+              href="https://github.com/Saramanda9988/LunaBox/releases/latest"
               target="_blank"
               rel="noreferrer noopener"
               className={cn(
