@@ -61,7 +61,7 @@ title: 安装指南
 
 提示框使用 `Callout`，类型包括 `info`、`idea`、`warn` 和 `error`。行内模板变量使用 Markdown 代码标记，例如 `{{.StartDate}}`。HTML 标签中的样式使用 React JSX 语法。
 
-站内链接使用完整页面地址，例如 `/features/manual-add/`；图片继续使用 `/image/example.png`。新增文档后，在对应目录的 `meta.json` 中登记页面名称。
+站内链接使用完整页面地址，例如 `/import/manual-add/`；图片继续使用 `/image/example.png`。新增文档后，在对应目录的 `meta.json` 中登记页面名称。
 
 ## 贡献指南
 

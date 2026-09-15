@@ -268,12 +268,12 @@ function MoreFeatures() {
           {[
             [
               'PotatoVN',
-              '/features/import-from-potatovn/',
+              '/import/import-from-potatovn/',
               '导入游戏与游玩记录',
             ],
-            ['Playnite', '/features/import-from-playnite/', '导入游戏与游玩记录'],
-            ['Vnite', '/features/import-from-vnite/', '导入游戏与游玩记录'],
-            ['ReinaManager', '/features/batch-import/', '导入游戏与游玩记录'],
+            ['Playnite', '/import/import-from-playnite/', '导入游戏与游玩记录'],
+            ['Vnite', '/import/import-from-vnite/', '导入游戏与游玩记录'],
+            ['ReinaManager', '/import/batch-import/', '导入游戏与游玩记录'],
           ].map(([title, href, description]) => (
             <Link
               href={href}

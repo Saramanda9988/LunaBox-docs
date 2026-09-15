@@ -1,0 +1,13 @@
+{
+  "title": "游戏启动",
+  "pages": [
+    "index",
+    "launch-tools",
+    "launch-with-steam",
+    "launch-with-wine",
+    "launch-with-crossover",
+    "launch-with-steam-compatibility",
+    "auto-detect-process"
+  ],
+  "defaultOpen": true
+}

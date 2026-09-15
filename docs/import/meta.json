@@ -1,0 +1,16 @@
+{
+  "title": "导入游戏",
+  "pages": [
+    "index",
+    "manual-add",
+    "batch-import",
+    "drag-drop-import",
+    "import-from-playnite",
+    "import-from-potatovn",
+    "import-from-vnite",
+    "import-from-reinamanager",
+    "import-from-yukihub",
+    "import-from-steam"
+  ],
+  "defaultOpen": true
+}

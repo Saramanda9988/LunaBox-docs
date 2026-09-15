@@ -9,7 +9,7 @@ import {
 } from 'fumadocs-ui/layouts/home/navbar';
 import Link from 'fumadocs-core/link';
 import Image from 'next/image';
-import { Book, Cloud, Library, PlusIcon, Terminal } from 'lucide-react';
+import { Book, Cloud, Gamepad2, Library, PlusIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { baseOptions } from '@/lib/layout.shared';
 import headLight from '@/public/head-light.png';
@@ -30,12 +30,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             { text: '快速开始', url: '/guide/introduction/', icon: <Book /> },
             { text: '功能详解', url: '/features/', icon: <Library /> },
             { text: '配置指南', url: '/configuration/', icon: <Cloud /> },
-            { text: '命令行工具', url: '/features/cli/', icon: <Terminal /> },
             {
               text: '导入游戏',
-              url: '/features/batch-import/',
+              url: '/import/',
               icon: <PlusIcon />,
             },
+            { text: '游戏启动', url: '/launch/', icon: <Gamepad2 /> },
           ],
         },
         {
@@ -88,17 +88,17 @@ export default function Layout({ children }: { children: ReactNode }) {
                   </p>
                 </NavbarMenuLink>
                 <NavbarMenuLink
-                  href="/features/cli/"
+                  href="/launch/"
                   className="lg:col-start-3 lg:row-start-1"
                 >
-                  <Terminal className="bg-fd-primary text-fd-primary-foreground p-1 mb-2 rounded-md" />
-                  <p className="font-medium">命令行工具</p>
+                  <Gamepad2 className="bg-fd-primary text-fd-primary-foreground p-1 mb-2 rounded-md" />
+                  <p className="font-medium">游戏启动</p>
                   <p className="text-fd-muted-foreground text-sm">
-                    在终端中查询与启动游戏。
+                    配置兼容环境与启动方式。
                   </p>
                 </NavbarMenuLink>
                 <NavbarMenuLink
-                  href="/features/batch-import/"
+                  href="/import/"
                   className="lg:col-start-3 lg:row-start-2"
                 >
                   <PlusIcon className="bg-fd-primary text-fd-primary-foreground p-1 mb-2 rounded-md" />
