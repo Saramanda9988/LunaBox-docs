@@ -1,0 +1,56 @@
+---
+title: "使用 Wine 启动游戏"
+description: "在 macOS 与 Linux 中通过 Wine 启动 Windows 游戏。"
+---
+
+LunaBox 在 macOS 与 Linux 上支持通过 Wine 启动 `.exe` 和 `.bat` 游戏，并继续记录游戏进程与游玩时长。
+
+## 准备 Wine
+
+请先安装适合当前系统的 Wine，并确认 Wine 可执行文件能够在终端中运行。LunaBox 需要具体的 Wine 可执行文件位置，目录本身无法作为启动器。
+
+## 设置全局 Wine
+
+1. 打开 **设置 → 游玩配置 → 游戏启动工具**。
+2. 在 **Wine 可执行文件位置** 中选择 `wine` 文件。
+3. 根据需要填写 **默认 Wine prefix**。
+4. Linux 用户可以填写 Winetricks 位置；留空时 LunaBox 会从 `PATH` 和常见位置查找。
+
+单个游戏可以覆盖默认 prefix，因此多个游戏可使用彼此独立的 Wine 环境。
+
+## 设置游戏
+
+1. 进入游戏详情并打开启动配置。
+2. 将可执行程序设为游戏主 `.exe` 或 `.bat` 文件。
+3. macOS 将 **默认启动方式** 设为 **兼容层启动**；Linux 保持 **普通启动**。
+4. 在 **兼容层** 中选择 **系统 Wine**。
+5. 根据需要填写 Wine 参数与该游戏的 Wine prefix，然后保存游戏。
+
+Linux 识别到 Windows 可执行文件时，会默认选择系统 Wine。macOS 需要显式选择兼容层启动方式。
+
+## Wine 参数
+
+Wine 参数支持普通命令参数和前置环境变量。`%command%` 表示游戏可执行文件，例如：
+
+```text
+LC_ALL=zh_CN.UTF-8 LANG=zh_CN.UTF-8 %command% -windowed
+```
+
+未填写 `%command%` 时，LunaBox 会将游戏文件放在 Wine 参数之前。建议先用空参数确认游戏能够启动，再逐项增加环境变量和参数。
+
+## Prefix 与快捷工具
+
+游戏配置中的 prefix 优先于全局默认值。两处都为空时，Wine 使用自身的默认 prefix。
+
+Linux 上的 **兼容层快捷工具** 可以打开 Prefix、C 盘、注册表、Wine 配置、Explorer 与 CMD。部分操作需要 Winetricks；可在全局游玩配置中指定对应可执行文件。
+
+## 启动异常
+
+| 现象 | 检查内容 |
+| --- | --- |
+| 提示 Wine 文件缺失 | 重新选择实际的 `wine` 可执行文件 |
+| 游戏启动后立即结束 | 在终端中使用相同 Wine 与 prefix 测试游戏 |
+| 中文显示异常 | 安装所需字体与区域组件，或添加 Locale 环境变量 |
+| 运行库缺失 | 使用 Winetricks 为该 prefix 安装对应组件 |
+| 时长记录提前结束 | 确认选择的是游戏主程序，并检查启动日志 |
+

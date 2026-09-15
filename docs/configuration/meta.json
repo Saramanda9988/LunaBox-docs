@@ -3,7 +3,10 @@
   "pages": [
     "index",
     "s3-cloud-backup",
-    "onedrive-cloud-backup"
+    "onedrive-cloud-backup",
+    "webdav-cloud-backup",
+    "umbra-cloud-backup",
+    "cloud-sync"
   ],
   "defaultOpen": true
 }

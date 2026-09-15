@@ -17,7 +17,7 @@ title: "配置指南"
 
 ## 云备份配置
 
-LunaBox 支持多种云备份方式，确保您的数据安全
+LunaBox 支持 S3、OneDrive、WebDAV 与 Umbra。云存储可用于数据库备份、游戏存档备份和[游戏库云同步](/configuration/cloud-sync/)。
 
 ### S3 兼容存储
 
@@ -40,3 +40,21 @@ LunaBox 集成了 OneDrive 备份支持。
 [查看详细配置指南](/configuration/onedrive-cloud-backup/)
 
 在设置页面点击登录 Microsoft 账号并授权，即可开启 OneDrive 云端同步。
+
+### WebDAV
+
+WebDAV 适用于网盘、NAS 与自建服务。需要填写服务地址和账号凭据，并为多设备设置一致的备份密码。
+
+[查看 WebDAV 配置指南](/configuration/webdav-cloud-backup/)
+
+### Umbra
+
+Umbra 通过浏览器授权和设备注册连接账户，无需设置备份密码。
+
+[查看 Umbra 配置指南](/configuration/umbra-cloud-backup/)
+
+## 云同步
+
+云同步会在设备间合并游戏资料、分类、标签、游玩记录、进度、评价和封面。本机启动文件、存档位置与 Steam 关联由各设备分别维护。
+
+[查看云同步使用指南](/configuration/cloud-sync/)

@@ -1,0 +1,54 @@
+---
+title: "从 Steam 导入游戏"
+description: "扫描本机 Steam 库，并按 AppID 获取游戏资料。"
+---
+
+LunaBox 可以扫描本机 Steam 库中的已安装游戏。该功能读取本地 `appmanifest_*.acf` 与 `libraryfolders.vdf`，无需 Steam Web API Key。
+
+## 扫描条件
+
+Steam 客户端和目标游戏需要安装在当前设备。扫描范围包括 Steam 主库及 `libraryfolders.vdf` 中登记的其他库。
+
+LunaBox 仅列出状态为完整安装、具有数字 AppID 且安装目录存在的项目。Steam Runtime、Proton、常用运行库和专用服务器会从结果中排除。
+
+## 执行导入
+
+![alt text](/image/steam-import-1.png)
+
+1. 打开 LunaBox 游戏库，点击 **添加游戏**。
+2. 选择 **从 Steam 导入**。
+3. 点击 **扫描 Steam 库**。
+4. 在预览页勾选准备加入 LunaBox 的游戏。
+5. 检查重复条目的处理方式，然后开始导入。
+
+| 重复条目处理 | 效果 |
+| --- | --- |
+| **跳过** | 保留 LunaBox 中的已有条目 |
+| **仅合并** | 保留已有资料；Steam 本地清单未包含游玩记录，因此通常不会增加时长 |
+| **更新并合并** | 更新已有资料与本机 Steam 启动关联 |
+
+## 导入内容
+
+每个游戏会保存 Steam AppID、安装目录和 Steam 启动关联，并将默认启动方式设为 **Steam 启动**。Linux 上已经存在的 Proton Prefix 也会被识别。
+
+LunaBox 会依据 AppID 获取名称、封面、开发商、简介、发行日期、评分和标签。网络请求失败时，游戏仍可使用本地名称、安装目录与 AppID 创建，元数据可在稍后重新获取。
+
+Windows 中通过 Steam 启动普通游戏和配置 Steam Input 的步骤参见[使用 Steam 启动游戏](/features/launch-with-steam/)。
+
+## 各平台的 Steam 位置
+
+| 平台 | 查找方式 |
+| --- | --- |
+| Windows | 从当前用户的 Steam 注册表项读取安装位置 |
+| macOS | 查找用户资料库中的 Steam 应用支持目录 |
+| Linux | 查找常见的原生、Flatpak 与 Snap 安装位置，也会读取 Steam 相关环境变量 |
+
+<Callout type="info" title="Linux Proton">
+
+导入 Windows 游戏后，可在游戏的启动配置中选择 Steam 使用的 Proton 版本。完整步骤参见[使用 Steam 兼容层启动](/features/launch-with-steam-compatibility/)。
+
+</Callout>
+
+## 扫描异常
+
+扫描结果为空时，请确认目标游戏已经下载完成，Steam 库仍登记在 `libraryfolders.vdf` 中，并且 LunaBox 对游戏库具有读取权限。Linux 用户还应确认当前 LunaBox 安装形式能够访问 Steam 的沙盒目录。

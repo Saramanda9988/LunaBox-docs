@@ -1,0 +1,54 @@
+---
+title: "使用 CrossOver 启动游戏"
+description: "在 macOS 中通过 CrossOver bottle 启动 Windows 游戏。"
+---
+
+LunaBox 支持在 macOS 上调用 CrossOver 的 Wine 可执行文件，并通过指定 bottle 启动 Windows 游戏。
+
+## 创建 CrossOver bottle
+
+请先在 CrossOver 中创建 bottle，并安装游戏需要的运行库、字体和区域组件。记录 bottle 的名称，名称需要与 CrossOver 中显示的内容一致。
+
+## 设置 CrossOver
+
+1. 打开 **设置 → 游玩配置 → 游戏启动工具**。
+2. 在 **CrossOver 可执行文件位置** 中选择以下文件：
+
+```text
+/Applications/CrossOver.app/Contents/SharedSupport/CrossOver/bin/wine
+```
+
+3. 在 **默认 CrossOver bottle** 中填写 bottle 名称。
+
+请选取应用包内部的 `bin/wine`。选择 `CrossOver.app` 会产生配置错误。
+
+## 设置游戏
+
+1. 进入游戏详情并打开启动配置。
+2. 将可执行程序设为 bottle 可访问的 `.exe` 或 `.bat` 文件。
+3. 将 **默认启动方式** 设为 **兼容层启动**。
+4. 在 **兼容层** 中选择 **CrossOver**。
+5. 在 **CrossOver bottle** 中填写该游戏使用的 bottle；留空时采用全局默认值。
+6. 根据需要填写 Wine 参数，然后保存游戏。
+
+启动时，LunaBox 会把 bottle 名称作为 `CX_BOTTLE` 环境变量传给 CrossOver，并监控该次启动产生的 Wine 进程。
+
+## 多游戏配置
+
+多个游戏可以共享一个 bottle，也可以在游戏启动配置中分别指定 bottle。需要不同运行库版本或系统区域设置时，使用独立 bottle 更容易维护。
+
+## 启动异常
+
+| 现象 | 检查内容 |
+| --- | --- |
+| 提示启动器配置错误 | 确认选择的是应用包内部的 `bin/wine` |
+| 找不到 bottle | 核对大小写、空格与 bottle 名称 |
+| 游戏文件无法访问 | 确认 CrossOver bottle 可以访问游戏所在磁盘 |
+| 游戏可以运行但缺少组件 | 先在 CrossOver 中为该 bottle 安装依赖 |
+
+<Callout type="info" title="平台范围">
+
+CrossOver 启动器目前用于 macOS。Linux 上请使用系统 Wine、本机 Proton，或 Steam 的 Proton 兼容层。
+
+</Callout>
+
