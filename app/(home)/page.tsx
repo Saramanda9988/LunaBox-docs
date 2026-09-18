@@ -142,7 +142,7 @@ const providers = [
   { name: '月幕 Galgame', image: 'ymgal-logo.png', width: 108 },
   { name: 'Steam', image: 'steam-logo.png', width: 110 },
   { name: 'DLsite', image: 'dlsite-logo.png', width: 104 },
-  { name: 'Hikarinagi', image: 'hikarinagi-logo.png', width: 150 },
+  { name: 'Hikarinagi', image: 'hikarinagi-logo.svg', width: 150 },
   { name: 'TouchGal', image: 'touchgal-logo.webp', width: 32, showName: true },
   {
     name: 'ErogameScape',
