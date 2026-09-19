@@ -253,12 +253,80 @@ function Collections() {
 }
 
 const importers = [
-  { name: 'PotatoVN', slug: 'potatovn' },
-  { name: 'Playnite', slug: 'playnite' },
-  { name: 'Vnite', slug: 'vnite' },
-  { name: 'ReinaManager', slug: 'reinamanager' },
-  { name: 'YukiHub', slug: 'yukihub' },
+  { name: 'PotatoVN', slug: 'potatovn', image: 'potatovn.png', x: 28, y: 22 },
+  { name: 'Playnite', slug: 'playnite', image: 'playnite.png', x: 72, y: 22 },
+  { name: 'Vnite', slug: 'vnite', image: 'vnite.png', x: 86, y: 50 },
+  { name: 'ReinaManager', slug: 'reinamanager', image: 'reinamanager.png', x: 72, y: 78 },
+  { name: 'YukiHub', slug: 'yukihub', image: 'yukihub.png', x: 28, y: 78 },
+  { name: 'Steam', slug: 'steam', image: 'steam.webp', x: 14, y: 50 },
 ];
+
+function ImportNetwork() {
+  return (
+    <div className="relative isolate mt-3 h-52 w-full @sm:h-56">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 size-full text-brand-readable/25"
+      >
+        {importers.map(({ slug, x, y }) => (
+          <line
+            key={slug}
+            x1={x}
+            y1={y}
+            x2="50"
+            y2="50"
+            stroke="currentColor"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+        ))}
+      </svg>
+      <ul
+        aria-label="支持导入的游戏管理器"
+        className="absolute inset-0 m-0 list-none p-0"
+      >
+        {importers.map(({ name, slug, image, x, y }) => (
+          <li
+            key={slug}
+            style={{ left: `${x}%`, top: `${y}%` }}
+            className="absolute -translate-x-1/2 -translate-y-1/2 hover:z-10 focus-within:z-10"
+          >
+            <Link
+              href={`/import/import-from-${slug}/`}
+              aria-label={`查看从 ${name} 导入的指南`}
+              className="group relative flex size-11 items-center justify-center rounded-full border border-fd-border bg-fd-card transition-colors hover:border-brand-readable focus-visible:border-brand-readable @sm:size-14"
+            >
+              <Image
+                src={`/importers/${image}`}
+                alt=""
+                width={56}
+                height={56}
+                className="size-full rounded-full object-cover"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute top-full left-1/2 mt-1.5 -translate-x-1/2 whitespace-nowrap text-[10px] font-medium text-fd-muted-foreground transition-colors group-hover:text-fd-foreground group-focus-visible:text-fd-foreground @sm:text-xs"
+              >
+                {name}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-fd-border bg-fd-card p-1 @sm:rounded-[20px]">
+        <Image
+          src="/icon/appicon.png"
+          alt="LunaBox"
+          width={64}
+          height={64}
+          className="size-12 rounded-xl @sm:size-14 @sm:rounded-2xl"
+        />
+      </div>
+    </div>
+  );
+}
 
 function MoreFeatures() {
   return (
@@ -271,56 +339,8 @@ function MoreFeatures() {
         <AgnosticBackground />
       </Card>
       <Card title="从熟悉的收藏开始" className="@container">
-        <p className="mb-8">轻松将现有游戏库迁移至 LunaBox</p>
-        <div className="my-auto py-6">
-          <div className="flex items-center justify-center gap-2 @sm:gap-5">
-            <ul
-              aria-label="支持导入的游戏管理器"
-              className="isolate flex -space-x-4 @sm:-space-x-5"
-            >
-              {importers.map(({ name, slug }) => (
-                <li key={slug} className="relative hover:z-10 focus-within:z-10">
-                  <Link
-                    href={`/import/import-from-${slug}/`}
-                    aria-label={`从 ${name} 导入游戏与游玩记录`}
-                    className="group relative flex size-10 items-center justify-center rounded-full border-[3px] border-fd-card bg-fd-secondary shadow-sm transition-transform hover:-translate-y-2 focus-visible:-translate-y-2 @sm:size-16 @sm:border-4"
-                  >
-                    <Image
-                      src={`/importers/${slug}.png`}
-                      alt=""
-                      width={64}
-                      height={64}
-                      sizes="64px"
-                      className="size-full rounded-full object-cover"
-                    />
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 whitespace-nowrap rounded-lg border bg-fd-popover px-2.5 py-1.5 text-xs font-medium text-fd-popover-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-                    >
-                      {name}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <ArrowRight
-              aria-hidden="true"
-              strokeWidth={1.5}
-              className="size-5 shrink-0 text-brand-readable @sm:size-8"
-            />
-            <div className="relative shrink-0">
-              <div className="rounded-2xl bg-fd-background p-1.5 shadow-sm @sm:rounded-3xl @sm:p-2">
-                <Image
-                  src="/icon/appicon.png"
-                  alt="LunaBox"
-                  width={64}
-                  height={64}
-                  className="size-10 rounded-xl @sm:size-16 @sm:rounded-2xl"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <p>轻松将现有游戏库迁移至 LunaBox</p>
+        <ImportNetwork />
       </Card>
     </>
   );
