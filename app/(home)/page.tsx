@@ -252,6 +252,14 @@ function Collections() {
   );
 }
 
+const importers = [
+  { name: 'PotatoVN', slug: 'potatovn' },
+  { name: 'Playnite', slug: 'playnite' },
+  { name: 'Vnite', slug: 'vnite' },
+  { name: 'ReinaManager', slug: 'reinamanager' },
+  { name: 'YukiHub', slug: 'yukihub' },
+];
+
 function MoreFeatures() {
   return (
     <>
@@ -262,28 +270,56 @@ function MoreFeatures() {
         </p>
         <AgnosticBackground />
       </Card>
-      <Card title="从熟悉的收藏开始">
+      <Card title="从熟悉的收藏开始" className="@container">
         <p className="mb-8">轻松将现有游戏库迁移至 LunaBox</p>
-        <div className="mt-auto flex flex-col gap-2 @container mask-[linear-gradient(to_bottom,white,transparent)]">
-          {[
-            [
-              'PotatoVN',
-              '/import/import-from-potatovn/',
-              '导入游戏与游玩记录',
-            ],
-            ['Playnite', '/import/import-from-playnite/', '导入游戏与游玩记录'],
-            ['Vnite', '/import/import-from-vnite/', '导入游戏与游玩记录'],
-            ['ReinaManager', '/import/batch-import/', '导入游戏与游玩记录'],
-          ].map(([title, href, description]) => (
-            <Link
-              href={href}
-              key={title}
-              className="flex flex-col text-sm gap-2 p-2 border border-dashed border-brand-secondary @lg:flex-row @lg:items-center"
+        <div className="my-auto py-6">
+          <div className="flex items-center justify-center gap-2 @sm:gap-5">
+            <ul
+              aria-label="支持导入的游戏管理器"
+              className="isolate flex -space-x-4 @sm:-space-x-5"
             >
-              <span className="font-medium text-nowrap">{title}</span>
-              <span className="text-xs flex-1 @lg:text-end">{description}</span>
-            </Link>
-          ))}
+              {importers.map(({ name, slug }) => (
+                <li key={slug} className="relative hover:z-10 focus-within:z-10">
+                  <Link
+                    href={`/import/import-from-${slug}/`}
+                    aria-label={`从 ${name} 导入游戏与游玩记录`}
+                    className="group relative flex size-10 items-center justify-center rounded-full border-[3px] border-fd-card bg-fd-secondary shadow-sm transition-transform hover:-translate-y-2 focus-visible:-translate-y-2 @sm:size-16 @sm:border-4"
+                  >
+                    <Image
+                      src={`/importers/${slug}.png`}
+                      alt=""
+                      width={64}
+                      height={64}
+                      sizes="64px"
+                      className="size-full rounded-full object-cover"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 whitespace-nowrap rounded-lg border bg-fd-popover px-2.5 py-1.5 text-xs font-medium text-fd-popover-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                    >
+                      {name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ArrowRight
+              aria-hidden="true"
+              strokeWidth={1.5}
+              className="size-5 shrink-0 text-brand-readable @sm:size-8"
+            />
+            <div className="relative shrink-0">
+              <div className="rounded-2xl bg-fd-background p-1.5 shadow-sm @sm:rounded-3xl @sm:p-2">
+                <Image
+                  src="/icon/appicon.png"
+                  alt="LunaBox"
+                  width={64}
+                  height={64}
+                  className="size-10 rounded-xl @sm:size-16 @sm:rounded-2xl"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </Card>
     </>
