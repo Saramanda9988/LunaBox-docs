@@ -24,41 +24,41 @@ LunaBox 的项目大门永远向所有喜欢 Galgame、热爱技术、渴望贡�
 - 添加新的使用指南和教程
 - 优化文档结构和导航
 
-## 客户端前端开发
+## 客户端界面开发
 
-如果你对现代前端技术感兴趣，可以参与 LunaBox 的前端界面开发与交互优化。你的代码将直接影响用户的视觉与操作体验。
+如果你对桌面界面与交互感兴趣，可以参与 LunaBox 的界面开发与交互优化。你的代码将直接影响用户的视觉与操作体验。
 
-LunaBox 的前端基于 **[React 18](https://react.dev/)** 和 **[TypeScript](https://www.typescriptlang.org/)** 构建，使用了以下技术栈：
-- **构建工具**: Vite
-- **样式方案**: UnoCSS (原子化 CSS)
-- **状态管理**: Zustand
-- **路由管理**: TanStack Router
+从 v2.0.0 开始，LunaBox 的界面使用 **Go** 编写，由 **[MyGo](https://github.com/egoist/mygo)** 原生渲染，不再使用 WebView 和 React 前端。界面代码位于 `apps/desktop/ui`：
+- **页面与组件**: `ui/pages`、`ui/components`，路由表在 `ui/routes.go`
+- **主题与样式**: `ui/theme` 中的色板、字号与玻璃模式
+- **多语言**: `ui/locales` 中的语言包，修改后运行 `pnpm i18n` 重新生成
+- **测试**: 使用 MyGo 的 `ui.Tester` 构建视图、模拟输入，无需打开窗口
 
 你可以帮助我们：
-- 改进 UI 设计，实现更酷炫的动画效果
-- 优化组件复用性与性能
-- 修复前端 Bug，提升交互流畅度
+- 改进 UI 设计，实现更流畅的动画效果
+- 优化组件复用性与渲染性能
+- 修复界面 Bug，完善 macOS 与 Linux 上的体验
 - 推进 RoadMap 中的你感兴趣的功能
 
 ## 客户端内部逻辑开发
 
-LunaBox 的内部核心逻辑运行在 **Go** 环境中，通过 **Wails** 框架与前端进行通信。如果你对高性能 Go 代码、本地系统交互或数据库操作感兴趣，这里有广阔的空间供你施展。
+LunaBox 的内部核心逻辑同样运行在 **Go** 环境中，位于 `packages/backend`，界面通过 `apps/desktop/api` 中的接口调用后端服务。如果你对高性能 Go 代码、本地系统交互或数据库操作感兴趣，这里有广阔的空间供你施展。
 
 技术栈包括：
-- **语言**: Go 1.24+
-- **框架**: Wails v2
+- **语言**: Go 1.27+
 - **数据库**: DuckDB
+- **启动与生命周期**: `packages/backend/bootstrap`，与界面框架无关
 
 你可以参与：
 - 优化数据存储与查询效率 (DuckDB)
 - 开发新的文件解析与管理功能
-- 完善云备份功能
+- 完善云备份与云同步功能
 - 推进 RoadMap 中的你感兴趣的功能
 
 ## 如何开始？
 
 1. Fork 本仓库到你的 Github 账号。
-2. 克隆代码到本地并按照 README 配置开发环境。
+2. 克隆代码到本地，并按照 [开发指南](/guide/installation/) 配置开发环境。
 3. 提交你的修改并创建 Pull Request。
 
 期待你的加入！

@@ -122,3 +122,9 @@ LunaBox 支持用户完全自定义统计报告模板。您可以通过编写 HT
 - **从现有模板起步**：直接从零编写可能会遗漏重要标签。建议复制软件内置的模板骨架（如 `editorial_report.html`），在此基础上修改样式。
 - **避免重名**：请确保您的文件名称不与 LunaBox 内置的模板文件重名，目前同名文件无法覆盖内置模板。
 - **模板函数计算**：模板内支持基础的数学计算（如 `add`, `sub`, `mul`, `div`），使用 `div` 语法时需自行保证除数不为 0。
+
+<Callout type="info" title="运行环境">
+
+LunaBox 的界面不使用 WebView，但模板的预览与导出需要借助系统的 WebView 渲染 HTML：Windows 需要 [WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)（Windows 10/11 通常已预装），macOS 使用系统自带的 WKWebView，Linux 需要安装 WebKitGTK。缺少时应用会弹窗提示，其他功能不受影响。
+
+</Callout>

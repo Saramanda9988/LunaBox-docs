@@ -333,8 +333,8 @@ function MoreFeatures() {
     <>
       <Card title="简约，也功能丰富" className="relative overflow-hidden z-2">
         <p className="mb-20">
-          LunaBox 基于 Wails
-          构建，以轻巧的桌面应用提供游戏管理、统计与备份功能
+          LunaBox 基于 Go 与 MyGo
+          原生渲染，以轻巧的桌面应用提供游戏管理、统计与备份功能
         </p>
         <AgnosticBackground />
       </Card>
